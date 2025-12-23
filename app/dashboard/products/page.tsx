@@ -1,17 +1,17 @@
-type Product = {
-  id: number;
+import { connectDB } from "../../../lib/db";
+import { Product } from "../../../models/Product";
+
+type ProductType = {
+  _id: string;
   name: string;
   price: number;
   stock: number;
 };
 
 export default async function ProductsPage() {
-  // This runs on the SERVER (SSR by default)
-  const products: Product[] = [
-    { id: 1, name: "Laptop", price: 70000, stock: 12 },
-    { id: 2, name: "Smartphone", price: 40000, stock: 25 },
-    { id: 3, name: "Headphones", price: 3000, stock: 50 },
-  ];
+  await connectDB();
+
+  const products: ProductType[] = await Product.find().lean();
 
   return (
     <main style={{ padding: "40px" }}>
@@ -26,11 +26,11 @@ export default async function ProductsPage() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.name}</td>
-              <td>{product.price}</td>
-              <td>{product.stock}</td>
+          {products.map((p) => (
+            <tr key={p._id}>
+              <td>{p.name}</td>
+              <td>{p.price}</td>
+              <td>{p.stock}</td>
             </tr>
           ))}
         </tbody>
