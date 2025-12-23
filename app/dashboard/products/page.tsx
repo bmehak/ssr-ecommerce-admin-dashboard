@@ -1,5 +1,6 @@
 import { connectDB } from "../../../lib/db";
 import { Product } from "../../../models/Product";
+import StockChart from "./StockChart";
 
 type ProductType = {
   _id: string;
@@ -14,9 +15,9 @@ export default async function ProductsPage() {
   const products: ProductType[] = await Product.find().lean();
 
   return (
-    <main style={{ padding: "40px" }}>
+    <div>
       <h1>Products</h1>
-
+      <StockChart products={products} />
       <table border={1} cellPadding={10}>
         <thead>
           <tr>
@@ -35,6 +36,6 @@ export default async function ProductsPage() {
           ))}
         </tbody>
       </table>
-    </main>
+    </div>
   );
 }
