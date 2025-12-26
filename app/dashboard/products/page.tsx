@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+import { Types } from "mongoose";
 import { connectDB } from "../../../lib/db";
 import { Product } from "../../../models/Product";
 import StockChart from "./StockChart";
@@ -9,10 +13,24 @@ type ProductType = {
   stock: number;
 };
 
+type RawProduct = {
+  _id: Types.ObjectId;
+  name: string;
+  price: number;
+  stock: number;
+};
+
 export default async function ProductsPage() {
   await connectDB();
 
-  const products: ProductType[] = await Product.find().lean();
+const rawProducts = await Product.find().lean();
+
+const products: ProductType[] = rawProducts.map((p) => ({
+  _id: p._id.toString(),
+  name: p.name,
+  price: p.price,
+  stock: p.stock,
+}));
 
   return (
     <div>
