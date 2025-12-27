@@ -43,9 +43,9 @@ export default function NewProductPage() {
       <form onSubmit={handleSubmit}>
         <input name="name" placeholder="Name" required />
         <br /><br />
-        <input name="price" type="number" placeholder="Price" required />
+        <input name="price" type="number" placeholder="Price" min="0" required />
         <br /><br />
-        <input name="stock" type="number" placeholder="Stock" required />
+        <input name="stock" type="number" placeholder="Stock" min="0" required />
         <br /><br />
         <button type="submit">Create</button>
       </form>
