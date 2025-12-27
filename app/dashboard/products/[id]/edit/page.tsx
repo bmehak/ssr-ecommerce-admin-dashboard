@@ -1,15 +1,16 @@
 import { connectDB } from "../../../../../lib/db";
 import { Product } from "../../../../../models/Product";
 import { redirect } from "next/navigation";
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-export default async function EditProductPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function EditProductPage({ params }: PageProps) {
+  const { id } = await params;
+
   await connectDB();
 
-  const product = await Product.findById(params.id).lean();
+  const product = await Product.findById(id).lean();
 
   if (!product) redirect("/dashboard/products");
 
@@ -17,13 +18,14 @@ export default async function EditProductPage({
     <main style={{ padding: "40px", maxWidth: "500px" }}>
       <h1>Edit Product</h1>
 
+      {}
       <form
-        action={`/api/products/${params.id}/edit`}
+        action={`/api/products/${id}/edit`}
         method="POST"
       >
         <input
           name="name"
-          defaultValue={product.name}
+          defaultValue={product.name as string}
           required
         />
         <br /><br />
@@ -32,7 +34,7 @@ export default async function EditProductPage({
           name="price"
           type="number"
           min="1"
-          defaultValue={product.price}
+          defaultValue={product.price as number}
           required
         />
         <br /><br />
@@ -41,7 +43,7 @@ export default async function EditProductPage({
           name="stock"
           type="number"
           min="0"
-          defaultValue={product.stock}
+          defaultValue={product.stock as number}
           required
         />
         <br /><br />
