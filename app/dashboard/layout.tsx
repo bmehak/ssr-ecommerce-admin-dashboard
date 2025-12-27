@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signOut } from "../../auth";
 
 export default function DashboardLayout({
   children,
@@ -31,6 +32,30 @@ export default function DashboardLayout({
             </li>
           </ul>
         </nav>
+        {/* Logout Form added at the bottom of the Sidebar */}
+        <div style={{ marginTop: "auto", paddingTop: "20px", borderTop: "1px solid #333" }}>
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/login" });
+            }}
+          >
+            <button
+              type="submit"
+              style={{
+                background: "none",
+                border: "none",
+                color: "#ff4d4d",
+                cursor: "pointer",
+                padding: 0,
+                fontSize: "16px",
+                fontWeight: "bold"
+              }}
+            >
+              Logout →
+            </button>
+          </form>
+        </div>
       </aside>
 
       {/* Main content */}
