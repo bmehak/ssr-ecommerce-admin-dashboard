@@ -51,7 +51,7 @@ const products: ProductType[] = rawProducts.map((p) => ({
               <td>{p.price}</td>
               <td>{p.stock}</td>
               <td>
-                <form action={`/dashboard/products/${p._id}/delete`} method="POST">
+                <form action={`/api/products/${p._id}/delete`} method="POST">
                   <button style={{ color: "red" }}>Delete</button>
                 </form>
               </td>
