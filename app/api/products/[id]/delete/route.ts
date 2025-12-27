@@ -1,14 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connectDB } from "../../../../../lib/db";
 import { Product } from "../../../../../models/Product";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: any
 ) {
   await connectDB();
 
-  await Product.findByIdAndDelete(params.id);
+  await Product.findByIdAndDelete(context.params.id);
 
   return NextResponse.redirect(
     new URL("/dashboard/products", req.url)
