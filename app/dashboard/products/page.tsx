@@ -34,6 +34,7 @@ const products: ProductType[] = rawProducts.map((p) => ({
             <th>Name</th>
             <th>Price (₹)</th>
             <th>Stock</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +46,11 @@ const products: ProductType[] = rawProducts.map((p) => ({
               <td>
                 <form action={`/api/products/${p._id}/delete`} method="POST">
                   <button style={{ color: "red" }}>Delete</button>
-                </form>
+                </form>       
+                &nbsp;
+                <a href={`/dashboard/products/${p._id}/edit`}>
+                  <button>Edit</button>
+                </a>
               </td>
             </tr>
           ))}
