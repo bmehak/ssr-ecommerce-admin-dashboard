@@ -13,13 +13,6 @@ type ProductType = {
   stock: number;
 };
 
-type RawProduct = {
-  _id: Types.ObjectId;
-  name: string;
-  price: number;
-  stock: number;
-};
-
 export default async function ProductsPage() {
   await connectDB();
 

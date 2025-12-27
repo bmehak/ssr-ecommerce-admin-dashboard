@@ -26,7 +26,7 @@ export default function NewProductPage() {
     });
 
     if (!res.ok) {
-      const data = await res.json();
+      await res.json();
       setError("Invalid input. Please check values.");
       return;
     }
