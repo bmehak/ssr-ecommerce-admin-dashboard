@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { Types } from "mongoose";
 import { connectDB } from "../../../lib/db";
 import { Product } from "../../../models/Product";
 import StockChart from "./StockChart";
