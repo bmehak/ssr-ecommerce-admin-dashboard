@@ -3,6 +3,7 @@ export const revalidate = 0;
 
 import { connectDB } from "../../lib/db";
 import { Product } from "../../models/Product";
+import StockChart from "@/components/StockChart";
 
 interface IProduct {
   _id: { toString: () => string };
@@ -30,10 +31,15 @@ export default async function DashboardPage() {
 
   const lowStock = products.filter((p) => p.stock < 10);
 
+  const chartData: { name: string; stock: number }[] = products.map(p => ({
+    name: p.name.length > 10 ? p.name.substring(0, 10) + "..." : p.name,
+    stock: p.stock
+  }));
+
   return (
     <main style={{ padding: "40px" }}>
       <h1>Admin Dashboard</h1>
-
+      <StockChart data={chartData} />
       <div style={{ display: "flex", gap: 20, marginTop: 20 }}>
         <Card title="Total Products" value={totalProducts} />
         <Card title="Total Stock" value={totalStock} />

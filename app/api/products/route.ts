@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../lib/db";
 import { Product } from "../../../models/Product";
-import { productSchema } from "../../../lib/validators/product";
+import { productSchema } from "@/lib/zod-schemas";
 
 export async function GET() {
   await connectDB();
@@ -21,6 +21,7 @@ export async function POST(req: Request) {
   }
 
   await connectDB();
+  console.log("Data being sent to DB:", parsed.data);
   const product = await Product.create(parsed.data);
 
   return NextResponse.json(product, { status: 201 });
