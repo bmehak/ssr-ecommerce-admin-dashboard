@@ -2,30 +2,18 @@ import { NextResponse } from "next/server";
 import { connectDB } from "../../../../../lib/db";
 import { Product } from "../../../../../models/Product";
 
-type RouteContext = {
+type Context = {
   params: Promise<{ id: string }>;
 };
 
-export async function POST(req: Request, context: RouteContext) {
-  await connectDB();
-
+export async function POST(req: Request, context: Context) {
   const { id } = await context.params;
 
-  const form = await req.formData();
-  const name = form.get("name") as string;
-  const price = Number(form.get("price"));
-  const stock = Number(form.get("stock"));
+  await connectDB();
 
-  try {
-    await Product.findByIdAndUpdate(id, {
-      name,
-      price,
-      stock,
-    });
+  const data = await req.json();
 
-    return NextResponse.redirect(new URL("/dashboard/products", req.url), 303);
-  } catch (error) {
-    console.error("Update Error:", error);
-    return NextResponse.json({ error: "Update failed" }, { status: 500 });
-  }
+  await Product.findByIdAndUpdate(id, data);
+
+  return NextResponse.json({ success: true });
 }
