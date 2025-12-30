@@ -1,28 +1,42 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { authConfig } from "./auth.config";
+import bcrypt from "bcryptjs";
 import { connectDB } from "./lib/db";
 import { User } from "./models/User";
-import bcrypt from "bcryptjs";
+import { authConfig } from "./auth.config";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
-  secret: process.env.AUTH_SECRET,
+
   providers: [
     Credentials({
-      async authorize(credentials) {
-        await connectDB();
-        const user = await User.findOne({ email: credentials?.email });
-        
-        if (!user || !user.password) return null;
+      credentials: {
+        email: {},
+        password: {},
+      },
 
-        const passwordsMatch = await bcrypt.compare(
-          credentials!.password as string,
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+        await connectDB();
+
+        const user = await User.findOne({ email }).lean();
+
+        if (!user) return null;
+
+        const passwordMatch = await bcrypt.compare(
+          password,
           user.password
         );
 
-        if (passwordsMatch) return { id: user._id.toString(), email: user.email };
-        return null;
+        if (!passwordMatch) return null;
+
+        return {
+          id: user._id.toString(),
+          email: user.email,
+          role: user.role as "admin" | "user",
+        };
       },
     }),
   ],

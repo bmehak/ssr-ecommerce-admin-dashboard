@@ -4,16 +4,33 @@ export const authConfig = {
   pages: {
     signIn: "/login",
   },
+
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isDashboard = nextUrl.pathname.startsWith("/dashboard");
-      if (isDashboard) {
-        if (isLoggedIn) return true;
-        return false; 
+    async jwt({ token, user }) {
+      if (user && "role" in user) {
+        token.role = user.role;
       }
-      return true;
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.user.role = token.role as "admin" | "user";
+      return session;
+    },
+
+    authorized({ auth, request }) {
+      const user = auth?.user;
+      const path = request.nextUrl.pathname;
+
+      const isDashboard = path.startsWith("/dashboard");
+
+      if (!isDashboard) return true;
+
+      if (!user) return false;
+
+      return user.role === "admin";
     },
   },
-  providers: [], 
+
+  providers: [],
 } satisfies NextAuthConfig;

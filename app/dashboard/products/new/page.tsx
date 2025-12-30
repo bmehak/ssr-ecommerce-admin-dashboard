@@ -5,6 +5,22 @@ import { useRouter } from "next/navigation";
 import { productSchema } from "@/lib/zod-schemas";
 import ImageUpload from "@/components/ImageUpload";
 import toast from "react-hot-toast";
+import { ZodError } from "zod";
+import { stepOneSchema } from "@/lib/zod-schemas";
+
+function validateStepOne(form: {
+  name: string;
+  description: string;
+  category: string;
+}) {
+  return productSchema
+    .pick({
+      name: true,
+      description: true,
+      category: true,
+    })
+    .safeParse(form);
+}
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -20,8 +36,24 @@ export default function NewProductPage() {
     image: "",
   });
 
-  const nextStep = () => setStep(2);
-  const prevStep = () => setStep(1);
+const nextStep = () => {
+  const stepOneData = {
+    name: formData.name,
+    description: formData.description,
+    category: formData.category,
+  };
+
+  const validation = stepOneSchema.safeParse(stepOneData);
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0].message;
+    toast.error(firstError);
+    return;
+  }
+
+  setStep(2);
+};
+const prevStep = () => setStep(1);
 
   async function handleSubmit() {
     console.log("Submitting formData:", formData);
@@ -29,7 +61,6 @@ export default function NewProductPage() {
     const validation = productSchema.safeParse(formData);
     
     if (!validation.success) {
-      console.error("Validation failed:", validation.error.format());
       const firstError = validation.error.issues[0].message;
       toast.error(firstError);
       return;

@@ -8,3 +8,11 @@ export const productSchema = z.object({
   stock: z.coerce.number().min(0, "Stock cannot be negative"),
   image: z.string().min(1, "Please upload an image"),
 });
+
+export const stepOneSchema = productSchema.pick({
+  name: true,
+  description: true,
+  category: true,
+});
+
+export type StepOneInput = z.infer<typeof stepOneSchema>;
