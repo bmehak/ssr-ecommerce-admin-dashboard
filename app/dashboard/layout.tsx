@@ -14,8 +14,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <ul>
           {role === "admin" && (
             <>
-              <li><Link href="/dashboard/products">Products</Link></li>
-              <li><Link href="/dashboard/products/new">Add Product</Link></li>
+              <li>
+                <Link href="/dashboard/products">Products</Link>
+              </li>
+          
+              <li>
+                <Link href="/dashboard/products/new">Add Product</Link>
+              </li>
+          
+              <li>
+                <Link href="/dashboard/admins/new">Create New Account</Link>
+              </li>
             </>
           )}
         </ul>

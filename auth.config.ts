@@ -23,12 +23,12 @@ export const authConfig = {
       const path = request.nextUrl.pathname;
 
       const isDashboard = path.startsWith("/dashboard");
+      const isAdminRoute = path.startsWith("/dashboard/admins");
 
-      if (!isDashboard) return true;
+      if (isDashboard && !user) return false;
+      if (isAdminRoute && user?.role !== "admin") return false;
 
-      if (!user) return false;
-
-      return user.role === "admin";
+      return true;
     },
   },
 
