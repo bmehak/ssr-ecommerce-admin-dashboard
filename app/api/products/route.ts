@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "../../../lib/db";
 import { Product } from "../../../models/Product";
 import { productSchema } from "@/lib/zod-schemas";
+import { auth } from "@/auth";
 
 export async function GET() {
   try {
@@ -16,6 +17,12 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+  const session = await auth();
+
+  if (!session || session.user?.role !== "admin") {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
     const json = await req.json();
     const parsed = productSchema.safeParse(json);
 

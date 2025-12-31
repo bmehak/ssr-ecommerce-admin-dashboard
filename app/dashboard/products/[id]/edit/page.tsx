@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
+import toast from "react-hot-toast";
 import { ProductType } from "@/types/Product";
 
 export default function EditProductPage() {
@@ -31,13 +32,37 @@ export default function EditProductPage() {
 
     setSaving(true);
 
-    await fetch(`/api/products/${id}/edit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
-    });
+    try {
+      const res = await fetch(`/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
 
-    router.push("/dashboard/products");
+      if (res.status === 400) {
+        const data = await res.json();
+        const errors = data.errors as Record<string, string[]>;
+        const first = Object.values(errors)[0][0];
+        toast.error(first);
+        setSaving(false);
+        return;
+      }
+
+      if (!res.ok) {
+        toast.error("Update failed. Try again.");
+        setSaving(false);
+        return;
+      }
+
+      toast.success("Product updated successfully");
+      router.push("/dashboard/products");
+      router.refresh();
+
+    } catch {
+      toast.error("Network error. Try again.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (!product) return <p>Loading...</p>;
@@ -110,11 +135,8 @@ export default function EditProductPage() {
 
         <CldUploadWidget
           uploadPreset="ml_default"
-          onSuccess={(result: unknown) => {
-            const info = result as {
-              info: { secure_url: string };
-            };
-
+          onSuccess={(result) => {
+            const info = result as { info: { secure_url: string } };
             setProduct({
               ...product,
               image: info.info.secure_url,
