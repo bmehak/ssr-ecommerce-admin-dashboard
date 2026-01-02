@@ -14,27 +14,30 @@ export default function AdminListPage() {
   const [users, setUsers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  async function load() {
-    setLoading(true);
-    const res = await fetch("/api/admins");
-    const data = await res.json();
-    setUsers(data);
-    setLoading(false);
-  }
+   useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const res = await fetch("/api/admins", {
+        cache: "no-store",
+        credentials: "include"
+      });
+      const data = await res.json();
+      setUsers(data);
+      setLoading(false);
+    }
 
-  useEffect(() => {
     load();
-  }, []); 
+  }, []);
 
   async function deleteUser(id: string, role: string) {
-    const confirmDelete = confirm("Are you sure you want to delete this user?");
+    const confirmDelete = confirm("Are you sure you want to delete this account?");
     if (!confirmDelete) return;
 
     const res = await fetch(`/api/admins/${id}`, { method: "DELETE" });
 
     if (res.ok) {
       toast.success(role == "admin" ? "Admin deleted" :"User deleted");
-      load();
+      location.reload();
     } else {
       const data = await res.json();
       toast.error(data.message || "Delete failed");
