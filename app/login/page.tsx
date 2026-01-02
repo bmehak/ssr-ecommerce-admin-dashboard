@@ -11,7 +11,7 @@ export default function LoginPage() {
             await signIn("credentials", {
               email: formData.get("email"),
               password: formData.get("password"),
-              redirectTo: "/dashboard/products", 
+              redirectTo: "/dashboard", 
             });
           } catch (error) {
             if (isRedirectError(error)) {

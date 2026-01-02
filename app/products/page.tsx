@@ -11,7 +11,29 @@ export default async function ProductsPage() {
 
   return (
     <main style={{ padding: "40px" }}>
-      <h1>Products</h1>
+      <div 
+        style={{ 
+          display: "flex", 
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+      >
+        <h1>Products</h1>
+
+        <Link
+          href="/dashboard/products"
+          style={{
+            padding: "10px 16px",
+            background: "#fff",
+            color: "#000",
+            borderRadius: "6px",
+            fontWeight: "bold",
+            textDecoration: "none",
+          }}
+        >
+          Go to Dashboard
+        </Link>
+      </div>
 
       <div
         style={{
