@@ -193,6 +193,19 @@ Admins can create additional users from the dashboard.
 
 ---
 
+## 🚀 Live Demo
+
+🔗 https://ssr-ecommerce-admin-dashboard.vercel.app
+
+---
+
+## 🔐 Demo Admin Login
+
+**Email:** admin@example.com  
+**Password:** admin123
+
+---
+
 ## 💡 Learning Outcomes
 
 This project demonstrates:
