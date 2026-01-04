@@ -51,7 +51,7 @@ export default function PlaceOrderButton({
       toast.success("Order placed successfully!");
       router.refresh();
     }
-    else toast.error("Order failed");
+    else toast.error("Order failed! Login to place order.");
 
     setLoading(false);
   }

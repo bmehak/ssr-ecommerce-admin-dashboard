@@ -4,18 +4,23 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { signIn } from "../../auth";
 
-export default function SignupPage({
+type SearchParams = {
+  callbackUrl?: string;
+}
+
+export default async function SignupPage({
   searchParams
 }: {
-  searchParams?: { callbackUrl?: string }
+  searchParams?: Promise<SearchParams>;
 }) {
 
-  const callback = searchParams?.callbackUrl || "/";
+  const params = searchParams ? await searchParams : {};
+  const callback = params?.callbackUrl || "/";
 
   return (
     <div style={pageWrap}>
       <div style={card}>
-        <h1 style={title}>Create Account ✨</h1>
+        <h1 style={title}>Create New Account </h1>
         <p style={subtitle}>Shop faster by creating a free account</p>
 
         <form
