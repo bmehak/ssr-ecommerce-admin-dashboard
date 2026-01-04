@@ -4,17 +4,25 @@ export const authConfig = {
   pages: {
     signIn: "/login",
   },
+  session: {
+    strategy: "jwt",
+  },
 
   callbacks: {
     async jwt({ token, user }) {
-      if (user && "role" in user) {
+      if (user) {
+        token.id = user.id
         token.role = user.role;
       }
+      if (!token.id && token.sub) token.id = token.sub;
       return token;
     },
 
     async session({ session, token }) {
-      session.user.role = token.role as "admin" | "user";
+      if(session.user){
+        session.user.id = token.id as string;
+        session.user.role = token.role as "admin" | "user";
+      }
       return session;
     },
 

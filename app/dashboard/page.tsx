@@ -50,7 +50,8 @@ export default async function DashboardPage() {
   const revenueByDate: Record<string, number> = {};
 
   lastWeekOrders.forEach(o => {
-    const date = new Date(o.createdAt).toLocaleDateString("en-IN");
+    const d = new Date(o.createdAt);
+    const date = d.toISOString().split("T")[0];
     revenueByDate[date] =
       (revenueByDate[date] || 0) + o.price * o.quantity;
   });
