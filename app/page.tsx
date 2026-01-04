@@ -9,105 +9,161 @@ export default async function HomePage() {
   return (
     <main
       style={{
-        padding: "60px",
+        minHeight: "100vh",
+        width: "100%",
         display: "flex",
-        flexDirection: "column",
-        gap: "30px",
+        justifyContent: "center",
         alignItems: "center",
+        background: "#000",
+        color: "#fff",
+        padding: "20px",
+        boxSizing: "border-box",
       }}
     >
-      <h1 style={{ color: "#fff" }}>
-        SSR E-commerce Platform
-      </h1>
+      {/* CARD */}
+      <div
+        style={{
+          maxWidth: "720px",
+          width: "100%",
+          background: "rgba(20,20,20,.9)",
+          borderRadius: "14px",
+          border: "1px solid #222",
+          padding: "32px 40px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "22px",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "28px",
+            fontWeight: 800,
+            margin: 0,
+          }}
+        >
+          SSR E-Commerce Platform
+        </h1>
 
-      {session ? (
-        <p style={{ color: "#aaa" }}>
-          Logged in as <strong>{email}</strong> ({role})
+        {!session ? (
+          <p style={{ color: "#aaa" }}>
+            You are currently browsing as <strong>Guest</strong>
+          </p>
+        ) : (
+          <div>
+            <p style={{ color: "#aaa", marginBottom: 6 }}>
+              Logged in as <strong>{email}</strong>
+            </p>
+
+            <span
+              style={{
+                background:
+                  role === "admin" ? "#38bdf8" : "#4ade80",
+                color: "#000",
+                padding: "6px 12px",
+                borderRadius: "999px",
+                fontWeight: 700,
+                fontSize: "13px",
+              }}
+            >
+              {role?.toUpperCase()}
+            </span>
+          </div>
+        )}
+
+        <hr style={{ borderColor: "#222" }} />
+
+        {/* BUTTONS ROW */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "12px",
+          }}
+        >
+          {role === "admin" && (
+            <Link href="/dashboard" style={buttonPrimary}>
+              Go to Admin Dashboard
+            </Link>
+          )}
+
+          <Link href="/products" style={buttonGrey}>
+            Browse Store
+          </Link>
+
+          {!session && (
+            <Link href="/login" style={buttonPrimary}>
+              Login
+            </Link>
+          )}
+
+          {session && (
+            <>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/login" });
+                }}
+              >
+                <button type="submit" style={buttonYellow}>
+                  Switch Account
+                </button>
+              </form>
+
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/" });
+                }}
+              >
+                <button type="submit" style={buttonRed}>
+                  Logout
+                </button>
+              </form>
+            </>
+          )}
+        </div>
+
+        {/* FOOTNOTE */}
+        <p style={{ color: "#666", fontSize: "13px", marginTop: "6px" }}>
+          Secure Server-Rendered Dashboard • Role-based Access • Real-time Analytics
         </p>
-      ) : (
-        <p style={{ color: "#aaa" }}>You are not logged in</p>
-      )}
-
-      <div style={{ display: "flex", gap: "15px" }}>
-
-        {role === "admin" && (
-          <Link
-            href="/dashboard/products"
-            style={buttonWhite}
-          >
-            Go to Admin Dashboard
-          </Link>
-        )}
-
-        <Link href="/products" style={buttonDark}>
-          View Store
-        </Link>
-
-        {!session && (
-          <Link href="/login" style={buttonWhite}>
-            Login
-          </Link>
-        )}
-
-        {session && (
-          <>
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/login" });
-              }}
-            >
-              <button type="submit" style={buttonYellow}>
-                Switch Account
-              </button>
-            </form>
-
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/" });
-              }}
-            >
-              <button type="submit" style={buttonRed}>
-                Logout
-              </button>
-            </form>
-          </>
-        )}
       </div>
     </main>
   );
 }
 
-const baseBtn = {
-  padding: "12px 18px",
-  borderRadius: "8px",
-  fontWeight: "bold",
-  textDecoration: "none",
-  border: "none",
-  cursor: "pointer",
-} as const;
+/* BUTTON STYLES */
 
-const buttonWhite = {
+const baseBtn: React.CSSProperties = {
+  padding: "12px 16px",
+  borderRadius: 10,
+  fontWeight: 800,
+  textDecoration: "none",
+  border: "1px solid #222",
+  cursor: "pointer",
+  transition: "all .18s ease",
+};
+
+const buttonPrimary: React.CSSProperties = {
   ...baseBtn,
   background: "#fff",
   color: "#000",
 };
 
-const buttonDark = {
+const buttonGrey: React.CSSProperties = {
   ...baseBtn,
-  background: "#333",
+  background: "#111",
   color: "#fff",
 };
 
-const buttonYellow = {
+const buttonYellow: React.CSSProperties = {
   ...baseBtn,
-  background: "#ffeb3b",
+  background: "#fde047",
   color: "#000",
 };
 
-const buttonRed = {
+const buttonRed: React.CSSProperties = {
   ...baseBtn,
-  background: "#ff4d4d",
+  background: "#ef4444",
   color: "#000",
 };

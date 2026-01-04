@@ -3,6 +3,7 @@ import { Product } from "../../models/Product";
 import Link from "next/link";
 import Image from "next/image";
 import { ProductType } from "@/types/Product";
+import LoginBar from "@/components/LoginBar";
 
 export default async function ProductsPage() {
   await connectDB();
@@ -10,37 +11,34 @@ export default async function ProductsPage() {
   const products = (await Product.find().lean()) as ProductType[];
 
   return (
-    <main style={{ padding: "40px" }}>
+    <main style={{ padding: "40px", maxWidth: 1200, margin: "0 auto" }}>
+      
+      {/* Top Bar */}
       <div 
         style={{ 
-          display: "flex", 
+          display: "flex",
           justifyContent: "space-between",
-          alignItems: "center"
+          alignItems: "center",
+          marginBottom: 30
         }}
       >
-        <h1>Products</h1>
+        <LoginBar />
 
-        <Link
-          href="/dashboard/products"
-          style={{
-            padding: "10px 16px",
-            background: "#fff",
-            color: "#000",
-            borderRadius: "6px",
-            fontWeight: "bold",
-            textDecoration: "none",
-          }}
-        >
-          Go to Dashboard
-        </Link>
+        <h1 style={{ fontSize: 32, fontWeight: 800 }}>🛒 Store</h1>
+
       </div>
 
+      {/* Sub Header */}
+      <p style={{ opacity: 0.8, marginBottom: 20 }}>
+        Browse available products and place orders instantly
+      </p>
+
+      {/* Product Grid */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-          gap: "20px",
-          marginTop: "20px",
+          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+          gap: "24px",
         }}
       >
         {products.map((p) => (
@@ -48,23 +46,54 @@ export default async function ProductsPage() {
             key={p._id}
             href={`/products/${p._id}`}
             style={{
-              background: "#111",
-              padding: "15px",
-              borderRadius: "10px",
+              background: "#0d0d0d",
+              borderRadius: "14px",
               textDecoration: "none",
               color: "white",
+              overflow: "hidden",
+              border: "1px solid #1f1f1f",
+              transition: "transform .2s ease, box-shadow .2s ease",
+              boxShadow: "0 0 0 rgba(0,0,0,0)",
             }}
           >
-            <Image
-              src={p.image}
-              alt={p.name}
-              width={260}
-              height={180}
-              style={{ borderRadius: "10px", objectFit: "cover" }}
-            />
+            <div
+              style={{
+                width: "100%",
+                height: 170,
+                position: "relative"
+              }}
+            >
+              <Image
+                src={p.image}
+                alt={p.name}
+                fill
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+            </div>
 
-            <h3>{p.name}</h3>
-            <p>₹{p.price}</p>
+            <div style={{ padding: "14px" }}>
+              <h3 style={{ margin: 0 }}>{p.name}</h3>
+
+              <p style={{ opacity: 0.7, marginTop: 6, fontSize: 14 }}>
+                {p.category}
+              </p>
+
+              <p style={{ marginTop: 12, fontWeight: 700, fontSize: 18 }}>
+                ₹{p.price.toLocaleString("en-IN")}
+              </p>
+
+              <div
+                style={{
+                  marginTop: 10,
+                  fontSize: 13,
+                  opacity: 0.7,
+                }}
+              >
+                {p.stock > 0 ? `In stock: ${p.stock}` : "Out of stock"}
+              </div>
+            </div>
           </Link>
         ))}
       </div>

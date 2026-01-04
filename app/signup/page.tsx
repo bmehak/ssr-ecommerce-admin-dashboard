@@ -1,11 +1,13 @@
-import { signIn } from "../../auth";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { connectDB } from "@/lib/db";
+import { User } from "@/models/User";
+import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
+import { signIn } from "../../auth";
 
-export default function LoginPage({
-  searchParams,
+export default function SignupPage({
+  searchParams
 }: {
-  searchParams?: { callbackUrl?: string };
+  searchParams?: { callbackUrl?: string }
 }) {
 
   const callback = searchParams?.callbackUrl || "/";
@@ -13,35 +15,48 @@ export default function LoginPage({
   return (
     <div style={pageWrap}>
       <div style={card}>
-        <h1 style={title}>Welcome Back 👋</h1>
-        <p style={subtitle}>Log in to continue shopping or manage the store</p>
+        <h1 style={title}>Create Account ✨</h1>
+        <p style={subtitle}>Shop faster by creating a free account</p>
 
         <form
           action={async (formData) => {
             "use server";
-            try {
-              await signIn("credentials", {
-                email: formData.get("email"),
-                password: formData.get("password"),
-                redirectTo: callback,
-              });
-            } catch (error) {
-              if (isRedirectError(error)) throw error;
-              redirect("/login");
-            }
+
+            const email = String(formData.get("email"));
+            const password = String(formData.get("password"));
+
+            await connectDB();
+
+            const exists = await User.findOne({ email });
+            if (exists) redirect("/login");
+
+            const hashed = await bcrypt.hash(password, 10);
+
+            await User.create({
+              email,
+              password: hashed,
+              role: "user"
+            });
+
+            // AUTO LOGIN
+            await signIn("credentials", {
+              email,
+              password,
+              redirectTo: callback
+            });
           }}
           style={form}
         >
           <input name="email" type="email" placeholder="Email" required style={input}/>
           <input name="password" type="password" placeholder="Password" required style={input}/>
 
-          <button type="submit" style={btnPrimary}>Sign In</button>
+          <button type="submit" style={btnPrimary}>Create Account</button>
         </form>
 
         <p style={{ marginTop: 14 }}>
-          New here?{" "}
-          <a href={`/signup?callbackUrl=${encodeURIComponent(callback)}`} style={{ color: "#38bdf8" }}>
-            Create an account
+          Already have an account?{" "}
+          <a href={`/login?callbackUrl=${encodeURIComponent(callback)}`} style={{ color:"#38bdf8" }}>
+            Login
           </a>
         </p>
       </div>
@@ -82,7 +97,7 @@ const input = {
 const btnPrimary = {
   padding: 12,
   borderRadius: 10,
-  background: "#38bdf8",
+  background: "#4ade80",
   color: "#000",
   fontWeight: 700,
   cursor: "pointer",
