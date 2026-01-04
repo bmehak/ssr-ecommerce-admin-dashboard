@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   await User.create({
     email,
     password: hashed,
-    role: "user",   // 🔥 FORCE USER ROLE
+    role: "user",   
   });
 
   return NextResponse.json(

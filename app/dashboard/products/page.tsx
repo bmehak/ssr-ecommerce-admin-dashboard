@@ -42,8 +42,6 @@ export default async function ProductsPage() {
         Manage product inventory & update listings
       </p>
 
-
-      {/* STOCK BAR CHART */}
       <div
         style={{
           background: "rgba(20,20,20,.9)",
@@ -57,8 +55,6 @@ export default async function ProductsPage() {
         <StockChart products={products} />
       </div>
 
-
-      {/* PRODUCT CARDS LIST */}
       <div
         style={{
           background: "rgba(20,20,20,.9)",
@@ -88,7 +84,6 @@ export default async function ProductsPage() {
               }}
             >
 
-              {/* IMAGE */}
               <img
                 src={p.image}
                 width={110}
@@ -100,8 +95,6 @@ export default async function ProductsPage() {
                 }}
               />
 
-
-              {/* TEXT CONTENT */}
               <div style={{ display: "grid", gap: 6 }}>
 
                 <div style={{ fontSize: 18, fontWeight: 700 }}>
@@ -120,7 +113,6 @@ export default async function ProductsPage() {
                   {p.category}
                 </span>
 
-                {/* MULTILINE DESCRIPTION */}
                 <p
                   style={{
                     margin: 0,
@@ -147,8 +139,6 @@ export default async function ProductsPage() {
                 </div>
               </div>
 
-
-              {/* ACTION BUTTONS */}
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
 
                 <Link href={`/dashboard/products/${p._id}/edit`}>

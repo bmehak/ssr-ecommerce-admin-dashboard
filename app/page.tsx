@@ -20,7 +20,6 @@ export default async function HomePage() {
         boxSizing: "border-box",
       }}
     >
-      {/* CARD */}
       <div
         style={{
           maxWidth: "720px",
@@ -72,7 +71,6 @@ export default async function HomePage() {
 
         <hr style={{ borderColor: "#222" }} />
 
-        {/* BUTTONS ROW */}
         <div
           style={{
             display: "flex",
@@ -123,7 +121,6 @@ export default async function HomePage() {
           )}
         </div>
 
-        {/* FOOTNOTE */}
         <p style={{ color: "#666", fontSize: "13px", marginTop: "6px" }}>
           Secure Server-Rendered Dashboard • Role-based Access • Real-time Analytics
         </p>
@@ -131,8 +128,6 @@ export default async function HomePage() {
     </main>
   );
 }
-
-/* BUTTON STYLES */
 
 const baseBtn: React.CSSProperties = {
   padding: "12px 16px",

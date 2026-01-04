@@ -2,11 +2,13 @@ import { signIn } from "../../auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams?: { callbackUrl?: string };
-}) {
+type LoginProps = {
+  searchParams?: {
+    callbackUrl?: string;
+  };
+};
+
+export default function LoginPage({ searchParams }: LoginProps) {
 
   const callback = searchParams?.callbackUrl || "/";
 
@@ -40,7 +42,10 @@ export default function LoginPage({
 
         <p style={{ marginTop: 14 }}>
           New here?{" "}
-          <a href={`/signup?callbackUrl=${encodeURIComponent(callback)}`} style={{ color: "#38bdf8" }}>
+          <a
+            href={`/signup?callbackUrl=${encodeURIComponent(callback)}`}
+            style={{ color: "#38bdf8" }}
+          >
             Create an account
           </a>
         </p>
@@ -48,6 +53,7 @@ export default function LoginPage({
     </div>
   );
 }
+
 
 const pageWrap = {
   display: "flex",

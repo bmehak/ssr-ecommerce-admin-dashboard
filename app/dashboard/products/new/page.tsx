@@ -98,7 +98,6 @@ const prevStep = () => setStep(1);
         <span style={{ color: "#888" }}>Step {step} of 2</span>
       </div>
 
-      {/* STEP 1: General Information */}
       {step === 1 && (
         <div style={formWrapper}>
           <label style={labelStyle}>Product Name</label>
@@ -133,7 +132,6 @@ const prevStep = () => setStep(1);
         </div>
       )}
 
-      {/* STEP 2: Pricing, Stock, and Media */}
       {step === 2 && (
         <div style={formWrapper}>
           <div style={{ display: "flex", gap: "20px" }}>

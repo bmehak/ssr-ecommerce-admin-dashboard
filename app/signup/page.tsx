@@ -38,7 +38,6 @@ export default function SignupPage({
               role: "user"
             });
 
-            // AUTO LOGIN
             await signIn("credentials", {
               email,
               password,

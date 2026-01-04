@@ -19,7 +19,7 @@ export default async function DashboardLayout({
         color: "#fff",
       }}
     >
-      {/* ---------- SIDEBAR ---------- */}
+
       <aside
         style={{
           width: 260,
@@ -69,7 +69,6 @@ export default async function DashboardLayout({
           </ul>
         </nav>
 
-        {/* ---------- LOGOUT BUTTON ---------- */}
         <form
           action={async () => {
             "use server";
@@ -94,7 +93,6 @@ export default async function DashboardLayout({
         </form>
       </aside>
 
-      {/* ---------- MAIN CONTENT ---------- */}
       <main
         style={{
           flex: 1,
@@ -107,7 +105,6 @@ export default async function DashboardLayout({
   );
 }
 
-/* ---------- REUSABLE NAV ITEM ---------- */
 function NavItem({
   href,
   children,

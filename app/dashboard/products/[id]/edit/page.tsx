@@ -224,7 +224,6 @@ export default function EditProductPage() {
   );
 }
 
-/* ----------- Typed Reusable Component ----------- */
 function InputBlock({ label, children }: InputBlockProps) {
   return (
     <div>
@@ -234,7 +233,6 @@ function InputBlock({ label, children }: InputBlockProps) {
   );
 }
 
-/* ----------- Styles ----------- */
 const inputBox: React.CSSProperties = {
   background: "#0f0f0f",
   border: "1px solid #333",

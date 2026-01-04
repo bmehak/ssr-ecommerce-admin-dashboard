@@ -13,7 +13,6 @@ export default async function ProductsPage() {
   return (
     <main style={{ padding: "40px", maxWidth: 1200, margin: "0 auto" }}>
       
-      {/* Top Bar */}
       <div 
         style={{ 
           display: "flex",
@@ -28,12 +27,10 @@ export default async function ProductsPage() {
 
       </div>
 
-      {/* Sub Header */}
       <p style={{ opacity: 0.8, marginBottom: 20 }}>
         Browse available products and place orders instantly
       </p>
 
-      {/* Product Grid */}
       <div
         style={{
           display: "grid",
