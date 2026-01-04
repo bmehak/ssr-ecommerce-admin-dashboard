@@ -2,15 +2,18 @@ import { signIn } from "../../auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { redirect } from "next/navigation";
 
-type LoginProps = {
-  searchParams?: {
-    callbackUrl?: string;
-  };
+type SearchParams = {
+  callbackUrl?: string;
 };
 
-export default function LoginPage({ searchParams }: LoginProps) {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams?: Promise<SearchParams>;
+}) {
 
-  const callback = searchParams?.callbackUrl || "/";
+  const params = searchParams ? await searchParams : {};
+  const callback = params?.callbackUrl || "/";
 
   return (
     <div style={pageWrap}>
