@@ -148,7 +148,7 @@ ssr-ecommerce-admin-dashboard/
 ## ▶️ Getting Started (Local Setup)
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/bmehak/ssr-ecommerce-admin-dashboard
 cd ssr-ecommerce-admin-dashboard
 npm install
 ```
@@ -156,8 +156,9 @@ npm install
 ```text
 MONGODB_URI=...
 AUTH_SECRET=...
-CLOUDINARY_KEY=...
-CLOUDINARY_SECRET=...
+AUTH_TRUST_HOST=true
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_URL=...
 ```
 ---
 
@@ -203,6 +204,12 @@ Admins can create additional users from the dashboard.
 
 **Email:** admin@example.com  
 **Password:** admin123
+
+--- 
+
+## 🎥 Demo Video
+
+Watch here: https://drive.google.com/drive/folders/1MMh8b7qUn5vxX0B5Q2xh0tDJParXZa2J?usp=drive_link
 
 ---
 
