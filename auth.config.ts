@@ -30,11 +30,13 @@ export const authConfig = {
       const user = auth?.user;
       const path = request.nextUrl.pathname;
 
-      const isDashboard = path.startsWith("/dashboard");
-      const isAdminRoute = path.startsWith("/dashboard/admins");
-
-      if (isDashboard && !user) return false;
-      if (isAdminRoute && user?.role !== "admin") return false;
+      if (path.startsWith("/dashboard")) {
+        if (!user) return false;
+      
+        if (path.startsWith("/dashboard/admins") && user.role !== "admin") {
+          return false;
+        }
+      }
 
       return true;
     },
